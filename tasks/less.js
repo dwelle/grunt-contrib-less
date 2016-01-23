@@ -76,7 +76,11 @@ module.exports = function(grunt) {
           },
           function(err) {
             nextFileObj(err);
-          });
+          })
+          .catch(function () {
+            process.stdout.write('\u0007');
+            process.nextTick(next);
+          })
       }, function() {
         if (compiled.length < 1) {
           grunt.log.warn('Destination ' + chalk.cyan(destFile) + ' not written because compiled files were empty.');
