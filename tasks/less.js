@@ -75,6 +75,7 @@ module.exports = function(grunt) {
             process.nextTick(next);
           },
           function(err) {
+            lessError(err, file);
             nextFileObj(err);
           })
           .catch(function () {
@@ -160,19 +161,16 @@ module.exports = function(grunt) {
           var args = [].slice.call(arguments);
           args.unshift(less);
           var res = options.customFunctions[name].apply(this, args);
-            return _.isObject(res) ? res : new less.tree.Anonymous(res);
+          return _.isObject(res) ? res : new less.tree.Anonymous(res);
         });
       });
     }
 
-    return less.render(srcCode, options)
-      .catch(function(err) {
-        lessError(err, srcFile);
-      });
+    return less.render(srcCode, options);
   };
 
   var parseVariableOptions = function(options) {
-    var pairs = _.pairs(options);
+    var pairs = _.toPairs(options);
     var output = '';
     pairs.forEach(function(pair) {
       output += '@' + pair[0] + ':' + pair[1] + ';';
