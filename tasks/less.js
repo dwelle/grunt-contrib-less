@@ -79,7 +79,6 @@ module.exports = function(grunt) {
             nextFileObj(err);
           })
           .catch(function () {
-            process.stdout.write('\u0007');
             process.nextTick(next);
           })
       }, function() {
@@ -185,7 +184,8 @@ module.exports = function(grunt) {
 
   var lessError = function(e, file) {
     var message = less.formatError ? less.formatError(e) : formatLessError(e);
-
+  
+    process.stdout.write('\u0007');
     grunt.log.error(message);
     grunt.fail.warn('Error compiling ' + file);
   };
